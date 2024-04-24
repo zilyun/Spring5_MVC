@@ -6,6 +6,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CookieValue;
@@ -16,8 +17,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.naver.myhome.domain.MailVO;
 import com.naver.myhome.domain.Member;
 import com.naver.myhome.service.MemberService;
+import com.naver.myhome.task.SendMail;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -36,7 +39,7 @@ import jakarta.servlet.http.HttpSession;
  * */
 
 @Controller
-@RequestMapping(value="/member") // http://localhost:8088/myhome4/member/로 시작하는 주소 매핑
+@RequestMapping(value="/member") // http://localhost:9500/myhome/member/로 시작하는 주소 매핑
 public class MemberController {
 	
 	// import org.slf4j.Logger;
@@ -44,10 +47,16 @@ public class MemberController {
 	private static final Logger logger = LoggerFactory.getLogger(MemberController.class);
 	
 	private MemberService memberService;
+	private PasswordEncoder passwordEncoder;
+	private SendMail sendMail;
 
 	@Autowired
-	public MemberController(MemberService memberService) {
+	public MemberController(MemberService memberService, 
+							PasswordEncoder passwordEncoder, 
+							SendMail sendMail) {
 		this.memberService = memberService;
+		this.passwordEncoder = passwordEncoder;
+		this.sendMail = sendMail;
 	}
 	
 	/*
@@ -92,17 +101,20 @@ public class MemberController {
 								Model model,
 								HttpServletRequest request) {
 		
+		// 비밀번호 암호화 추가
+		String encPassword = passwordEncoder.encode(member.getPassword());
+		logger.info(encPassword);
+		member.setPassword(encPassword);
+		
 		int result = memberService.insert(member);
-		// result = 0;
-		/*
-		 * 스프링에서 제공하는 RedirectAttributes는 기존의 Servlet에서 사용되던 
-		 * response.sendRedirect()를 사용할 때와 동일한 용도로 사용합니다.
-		 * 리다이렉트로 전송하면 파라미터를 전달하고자 할 때 addAttribute()나 addFlashAttribute()를 사용합니다.
-		 * 예) response.sendredirect("/test?result=1");
-		 * 		=> rattr.addAttribute("result", 1)
-		 * */
+		
 		// 삽입이 된 경우
 		if (result == 1) {
+			MailVO vo = new MailVO();
+			vo.setTo(member.getEmail());
+			vo.setContent(member.getId() + "님 회원 가입을 축하드립니다.");
+			//sendMail.sendMail(vo);
+			
 			rattr.addFlashAttribute("result", "joinSuccess");
 			return "redirect:login"; // /login 절대경로, login 상대경로
 		} else {

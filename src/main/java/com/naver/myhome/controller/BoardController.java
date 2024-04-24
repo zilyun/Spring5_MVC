@@ -67,7 +67,7 @@ public class BoardController {
 			endpage = maxpage;
 
 		List<Board> boardlist = boardService.getBoardList(page, limit); // 리스트를 받아옴
-
+		
 		mv.setViewName("board/boardList");
 		mv.addObject("page", page);
 		mv.addObject("maxpage", maxpage);

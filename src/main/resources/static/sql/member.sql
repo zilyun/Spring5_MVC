@@ -1,3 +1,8 @@
+conn system/1234
+create user boot2 indentified by tiger
+grant resource, connect, dba to boot2;
+conn boot2/tiger
+
 drop table member cascade constraints purge;
 -- 1. index.jsp에서 시작합니다.
 -- 2. 관리자 계정 admin, 비번 1234를 만듭니다.

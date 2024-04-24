@@ -4,7 +4,7 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- Mapper 인터페이스의 패키지명과 이름을 namespace로 설정합니다. -->
-<mapper namespace="com.naver.myhome4.mybatis.mapper.MemberMapper">
+<mapper namespace="com.naver.myhome.mybatis.mapper.MemberMapper">
 	<!-- 
 		1. 태그에 id 속성은 Mapper 인터페이스에 사용된 메서드 명과 동일하게 작성됩니다.
 		2. resultType 속성은 Mapper 인터페이스에 사용된 메서드의 반환 타입을 작성해줍니다.
@@ -15,7 +15,7 @@
 	</select>
 	
 	<insert id="insert">
-		INSERT INTO member VALUES(#{id},#{password},#{name},#{age},#{gender},#{email})
+		INSERT INTO member(id, password, name, age, gender, email) VALUES(#{id},#{password},#{name},#{age},#{gender},#{email})
 	</insert>
 	
 	<update id="update">

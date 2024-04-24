@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.naver.myhome.domain.Member;
@@ -14,10 +15,12 @@ import com.naver.myhome.mybatis.mapper.MemberMapper;
 public class MemberServiceImpl implements MemberService {
 
 	private MemberMapper dao;
+	private PasswordEncoder passwordEncoder;
 	
 	@Autowired
-	public MemberServiceImpl(MemberMapper dao) {
+	public MemberServiceImpl(MemberMapper dao, PasswordEncoder passwordEncoder) {
 		this.dao = dao;
+		this.passwordEncoder = passwordEncoder; 
 	}
 	
 	
@@ -27,7 +30,11 @@ public class MemberServiceImpl implements MemberService {
 		
 		Member rmember = dao.isId(id);
 		if(rmember!=null) { // 아이디가 존재하는 경우 
-			if(rmember.getPassword().equals(password)) {
+			// passwordEncoder.matches(rawPassword, encodedPassword)
+			// 사용자에게 입력받은 패스워드를 비교하고자 할 때 사용하는 메서드입니다.
+			// rawPassword : 사용자가 입력한 패스워드
+			// endcodedPassword : DB에 저장된 패스워드
+			if(passwordEncoder.matches(password, rmember.getPassword())) {
 				result = 1; // 아이디와 비밀번호가 일치하는 경우
 			} else {
 				result = 0; // 아이디는 존재하지만 비밀번호가 일치하지 않는 경우

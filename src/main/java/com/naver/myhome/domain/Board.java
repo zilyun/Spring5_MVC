@@ -21,9 +21,19 @@ public class Board {
 
 	private String BOARD_ORIGINAL; // 첨부될 파일의 이름
 	private String BOARD_DATE;
+	
+	private int CNT;
 
 	// 이곳에서 오른쪽 마우스 버튼 클릭 후 -> Source
 	// -> Generate Getters and Setters(alt + shift + s)
+	
+	public int getCNT() {
+		return CNT;
+	}
+
+	public void setCNT(int cNT) {
+		CNT = cNT;
+	}
 
 	public int getBOARD_NUM() {
 		return BOARD_NUM;
