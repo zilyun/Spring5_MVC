@@ -43,4 +43,8 @@ public interface BoardMapper {
 	
 	// BOARD_RE_SEQ 값 수정
 	public int boardReplyUpdate(Board board);
+
+	public List<String> getDeleteFileList();
+
+	public void deleteFileList(String filename);
 }

@@ -53,9 +53,9 @@ function ajax(sdata) {
 							subject = subject.substr(0,20) + "..."; //0부터 20개의 부분 문자열 추출
 						}
 						output += "<td><div>" + blank + img
-						output += ' <a href="detail?num=' + item.board_NUM + '">';
+						output += '<a href="detail?num=' + item.board_NUM + '">';
 						output += subject.replace(/</g,'&lt;').replace(/>/g,'&gt;')
-								  + '</a>[' /*+ item.cnt*/ + ']</div></td>'
+								  + '</a> [' + item.cnt + ']</div></td>'
 						output += '<td><div>' + item.board_NAME + '</div></td>'
 						output += '<td><div>' + item.board_DATE + '</div></td>'
 						output += '<td><div>' + item.board_READCOUNT + '</div></td></tr>'

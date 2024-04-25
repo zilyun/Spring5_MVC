@@ -91,4 +91,14 @@ public class BoardServiceImpl implements BoardService {
 		return dao.boardReply(board);
 	}
 
+	@Override
+	public List<String> getDeleteFileList() {
+		return dao.getDeleteFileList();
+	}
+
+	@Override
+	public void deleteFileList(String filename) {
+		dao.deleteFileList(filename);
+	}
+
 }

@@ -148,4 +148,13 @@
 	   									        WHERE  BOARD_RE_REF = #{BOARD_RE_REF})))  
 	   	]]>
 	   </delete>
+	   
+	   <select id="getDeleteFileList" resultType="String">
+	   		select board_file from delete_file
+	   </select>
+	   
+	   <delete id="deleteFileList">
+	   		delete delete_file
+	   		where board_file = #{file_name}
+	   </delete>
 </mapper>

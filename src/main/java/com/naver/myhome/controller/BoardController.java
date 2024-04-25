@@ -10,6 +10,7 @@ import java.util.Random;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.FileCopyUtils;
@@ -34,7 +35,9 @@ import jakarta.servlet.http.HttpServletResponse;
 @Controller
 @RequestMapping(value = "/board")
 public class BoardController {
-
+	@Value("${my.savefolder}")
+	private String saveFolder;
+	
 	private static final Logger logger = LoggerFactory.getLogger(BoardController.class);
 
 	private BoardService boardService;
@@ -101,8 +104,8 @@ public class BoardController {
 		if (!uploadfile.isEmpty()) {
 			String fileName = uploadfile.getOriginalFilename();//원래 파일명
 			board.setBOARD_ORIGINAL(fileName);// 원래 파일명 저장
-			String saveFolder =	request.getSession().getServletContext().getRealPath("resources")  
-					+ "/upload";			
+			//String saveFolder =	request.getSession().getServletContext().getRealPath("resources")  
+			//		+ "/upload";			
 			String fileDBName = fileDBName(fileName, saveFolder);
 			logger.info("fileDBName = " + fileDBName);
 
@@ -267,7 +270,7 @@ public class BoardController {
 		}
 		
 		MultipartFile uploadfile = boarddata.getUploadfile();
-		String saveFolder = request.getSession().getServletContext().getRealPath("resources") + "/upload";
+		//String saveFolder = request.getSession().getServletContext().getRealPath("resources") + "/upload";
 		
 		if (check != null && !check.equals("")) { // 기존 파일 그대로 사용하는 경우입니다.
 			logger.info("기존 파일 그대로 사용합니다.");
@@ -396,12 +399,13 @@ public class BoardController {
 								String original,
 								HttpServletResponse response) throws Exception {
 		
-		String savePath = "resources/upload";
+		//String savePath = "resources/upload";
 		// 서블릿의 실행 환경 정보를 담고 있는 객체를 리턴합니다.
-		ServletContext context = request.getSession().getServletContext();
-		String sDownloadPath = context.getRealPath(savePath);
-		
-		String sFilePath = sDownloadPath + filename;
+		//ServletContext context = request.getSession().getServletContext();
+		//String sDownloadPath = context.getRealPath(savePath);
+		//String sFilePath = sDownloadPath + filename;
+		//수정
+		String sFilePath = saveFolder + filename;
 		
 		File file = new File(sFilePath);
 		
